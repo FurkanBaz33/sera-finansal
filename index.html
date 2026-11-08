@@ -104,7 +104,7 @@
             </div>
 
             <div id="TabGiderler" class="tabcontent">
-                <p style="color: #666; font-size: 12px; margin-top: 0;">Bu alanda seçtiğiniz tarih aralığındaki <strong>Elektrik, İlaç ve Su</strong> giderleri açıklamalarına göre gruplandırılarak gösterilmektedir.</p>
+                <p style="color: #666; font-size: 12px; margin-top: 0;">Bu alanda seçtiğiniz tarih aralığındaki tüm giderler açıklamalarına göre alt gruplara ayrılarak gösterilmektedir.</p>
                 <div id="gider_gruplari_alani"></div>
             </div>
 
@@ -161,13 +161,12 @@
         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAl3px4NoeqEQwTYI6CFGRhzn1_I_UJyUM",
-            authDomain: "sera-finansal.firebaseapp.com",
-            projectId: "sera-finansal",
-            storageBucket: "sera-finansal.firebasestorage.app",
-            messagingSenderId: "1030343441129",
-            appId: "1:1030343441129:web:e841d3ce136d8c18ae8e78",
-            measurementId: "G-V6JT7MCHL5"
+            apiKey: "API_KEY_BURAYA",
+            authDomain: "PROJE_ADI.firebaseapp.com",
+            projectId: "PROJE_ADI",
+            storageBucket: "PROJE_ADI.appspot.com",
+            messagingSenderId: "SENDER_ID_BURAYA",
+            appId: "APP_ID_BURAYA"
         };
 
         let app, db;
@@ -184,9 +183,9 @@
         window.ozelEndDate = null;
         window.activeTimeBtn = null;
 
-        // İSTENİLEN GÜNCELLEME: Ana gider kalemleri sadece Elektrik, İlaç, Su olacak.
+        // İSTENİLEN GÜNCELLEME: Ana gider kalemleri güncellendi
         const gelirTurleri = ["Muz Satışı", "Devlet Desteği", "Fide Satışı", "Diğer Gelir"];
-        const giderTurleri = ["Elektrik", "İlaç", "Su"];
+        const giderTurleri = ["Elektrik", "Su", "Ziraat", "İşçilik", "Diğer"];
 
         window.openTab = function(evt, tabName) {
             let i, tabcontent, tablinks;
@@ -299,7 +298,7 @@
             let toplamGelir = 0; let toplamGider = 0; let turOzetleri = {};
             let gosterilecekler = [...window.kayitlar];
 
-            // GÜNCELLEME 3: Tarih Filtresi düzeltildi (Zaman dilimi kaymaları önlendi)
+            // Tarih Filtresi
             const bugun = new Date();
             const bugunYil = bugun.getFullYear();
             const bugunAy = bugun.getMonth();
@@ -347,20 +346,26 @@
                 turOzetleri[k.tur] += k.tutar;
             });
 
-            // GÜNCELLEME 2: Gider Grupları (Açıklamaya göre) Sekmesi İçeriğini Hazırla
-            const giderGruplari = { "Elektrik": {}, "İlaç": {}, "Su": {} };
-            let anaGiderToplamlari = { "Elektrik": 0, "İlaç": 0, "Su": 0 };
+            // Gider Grupları (Açıklamaya göre) Sekmesi İçeriğini Dinamik Hazırla
+            const giderGruplari = {};
+            let anaGiderToplamlari = {};
+            
+            // Tüm yeni ve eski kayıtların gruplanabilmesi için gider türlerini dinamik oluşturalım
+            giderTurleri.forEach(tur => {
+                giderGruplari[tur] = {};
+                anaGiderToplamlari[tur] = 0;
+            });
             
             gosterilecekler.forEach(k => {
                 if(k.islem === 'Gider') {
                     let tur = k.tur;
+                    // Eğer önceden girilmiş ve mevcut listede olmayan bir tür varsa onu da dinamik ekle
                     if(!giderGruplari[tur]) { 
                         giderGruplari[tur] = {}; 
                         anaGiderToplamlari[tur] = 0; 
                     }
                     
                     let aciklama = (k.aciklama || "Açıklama Girilmemiş").trim();
-                    // Aynı yazılanları birleştirmek için ilk harfi büyük gerisini küçük yapabiliriz.
                     let aciklamaNormalize = aciklama.charAt(0).toUpperCase() + aciklama.slice(1).toLowerCase();
 
                     if(!giderGruplari[tur][aciklamaNormalize]) {
@@ -375,14 +380,14 @@
             giderAlani.innerHTML = '';
             let veriVar = false;
 
-            giderTurleri.forEach(tur => {
+            // Mevcut verisi olan tüm gider kategorilerini listele
+            Object.keys(giderGruplari).sort().forEach(tur => {
                 if(anaGiderToplamlari[tur] > 0) {
                     veriVar = true;
                     let catDiv = document.createElement('div');
                     catDiv.className = 'gider-kategori';
                     catDiv.innerHTML = `<h3>${tur} Giderleri</h3>`;
                     
-                    // Açıklama gruplarını ekle
                     for (const [ack, miktar] of Object.entries(giderGruplari[tur])) {
                         let itemDiv = document.createElement('div');
                         itemDiv.className = 'gider-aciklama-item';
@@ -390,7 +395,6 @@
                         catDiv.appendChild(itemDiv);
                     }
 
-                    // Toplam satırını ekle
                     let totalDiv = document.createElement('div');
                     totalDiv.className = 'gider-toplam';
                     totalDiv.innerText = `${tur} Toplamı: ${window.formatMoney(anaGiderToplamlari[tur])} ₺`;
