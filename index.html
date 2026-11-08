@@ -3,155 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muz Serası Günlük Giriş</title>
+    <title>Muz Serası Günlük Giriş - Filtreli Ortak Sistem</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 13px;
-            margin: 20px;
-            background-color: #ffffff;
-            color: #333;
-        }
-        h2 {
-            margin-top: 0;
-            font-size: 18px;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 5px;
-        }
-        .top-bar {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .top-bar input, .top-bar select, .top-bar button {
-            padding: 4px 6px;
-            font-size: 12px;
-            border: 1px solid #999;
-        }
-        .top-bar button {
-            cursor: pointer;
-            background-color: #f0f0f0;
-        }
-        .top-bar button:hover {
-            background-color: #e0e0e0;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-        .main-content {
-            flex: 1;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #999;
-            padding: 6px;
-            text-align: left;
-        }
-        th {
-            background-color: #f5f5f5;
-            font-weight: bold;
-            text-align: center;
-        }
-        td {
-            text-align: center;
-        }
-        .summary-panel {
-            width: 280px;
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 15px;
-        }
-        .summary-panel h3 {
-            margin-top: 0;
-            font-size: 15px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-        }
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            margin-bottom: 15px;
-        }
-        .filter-buttons button {
-            padding: 3px 6px;
-            font-size: 11px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            background: #fff;
-        }
-        .filter-buttons button.active {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            border-bottom: 1px dotted #ccc;
-            padding-bottom: 4px;
-        }
-        .summary-item.bold {
-            font-weight: bold;
-            font-size: 14px;
-            border-bottom: none;
-            margin-top: 10px;
-        }
-        .tur-ozetleri {
-            margin-top: 20px;
-        }
-        .tur-ozetleri h4 {
-            margin: 0 0 10px 0;
-            font-size: 13px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 3px;
-        }
-        .action-btn {
-            font-size: 11px;
-            padding: 2px 6px;
-            cursor: pointer;
-            display: block;
-            margin: 2px auto;
-            width: 60px;
-            border: 1px solid #999;
-            background-color: #f0f0f0;
-        }
-        .action-btn:hover {
-            background-color: #ddd;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; margin: 20px; background-color: #ffffff; color: #333; }
+        h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+        .top-bar { display: flex; gap: 5px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+        .top-bar input, .top-bar select, .top-bar button { padding: 4px 6px; font-size: 12px; border: 1px solid #999; }
+        .top-bar button { cursor: pointer; background-color: #f0f0f0; }
+        .top-bar button:hover { background-color: #e0e0e0; }
+        .container { display: flex; gap: 20px; align-items: flex-start; }
+        .main-content { flex: 1; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #999; padding: 6px; text-align: left; }
+        th { background-color: #f5f5f5; font-weight: bold; text-align: center; }
+        td { text-align: center; }
+        .summary-panel { width: 280px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 4px; padding: 15px; }
+        .summary-panel h3 { margin-top: 0; font-size: 15px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .filter-buttons { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 15px; }
+        .filter-buttons button { padding: 3px 6px; font-size: 11px; cursor: pointer; border: 1px solid #ccc; background: #fff; }
+        .filter-buttons button.active { background: #007bff; color: white; border-color: #007bff; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px dotted #ccc; padding-bottom: 4px; }
+        .summary-item.bold { font-weight: bold; font-size: 14px; border-bottom: none; margin-top: 10px; }
+        .tur-ozetleri { margin-top: 20px; }
+        .tur-ozetleri h4 { margin: 0 0 10px 0; font-size: 13px; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+        .action-btn { font-size: 11px; padding: 2px 6px; cursor: pointer; display: block; margin: 2px auto; width: 60px; border: 1px solid #999; background-color: #f0f0f0; }
+        .action-btn:hover { background-color: #ddd; }
         .text-green { color: #008000; font-weight: bold; }
         .text-red { color: #cc0000; }
+        .table-filters { margin-bottom: 10px; }
+        .table-filters button { padding: 3px 10px; font-size: 12px; cursor: pointer; border: 1px solid #ccc; background: #eee; }
+        .table-filters button.active { background: #ddd; font-weight: bold; }
         
-        /* Table Filters */
-        .table-filters {
-            margin-bottom: 10px;
-        }
-        .table-filters button {
-            padding: 3px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            background: #eee;
-        }
-        .table-filters button.active {
-            background: #ddd;
-            font-weight: bold;
-        }
+        /* Modal Stili */
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 300px; border-radius: 5px; }
+        .modal-content input { margin-bottom: 10px; width: 90%; padding: 5px; }
+        .modal-content button { padding: 5px 10px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h2>Muz Serası Günlük Giriş</h2>
+    <h2>Muz Serası Günlük Giriş (Bulut Senkronizasyonlu)</h2>
     
     <div class="top-bar">
         <input type="date" id="tarih">
@@ -159,9 +50,7 @@
             <option value="Gelir">Gelir</option>
             <option value="Gider">Gider</option>
         </select>
-        <select id="tur">
-            <!-- Dinamik dolacak -->
-        </select>
+        <select id="tur"></select>
         <input type="text" id="aciklama" placeholder="Açıklama / Not (Örn: İşçilik, İlaç vs.)" style="width: 250px;">
         <input type="number" id="tutar" placeholder="Tutar (₺)" step="0.01" style="width: 100px;">
         <button onclick="kaydet()">Kaydet</button>
@@ -186,22 +75,21 @@
                         <th>İşlem</th>
                     </tr>
                 </thead>
-                <tbody id="kayit_govdesi">
-                    <!-- Kayıtlar buraya JS ile gelecek -->
-                </tbody>
+                <tbody id="kayit_govdesi"></tbody>
             </table>
         </div>
 
         <div class="summary-panel">
             <h3>Özet</h3>
             <div class="filter-buttons">
-                <button class="active">Tümü</button>
-                <button>Günlük</button>
-                <button>Haftalık</button>
-                <button>Aylık</button>
-                <button>Yıllık</button>
-                <button>Özel Aralık</button>
+                <button class="active" onclick="setTimeFilter('Tümü', this)">Tümü</button>
+                <button onclick="setTimeFilter('Günlük', this)">Günlük</button>
+                <button onclick="setTimeFilter('Haftalık', this)">Haftalık</button>
+                <button onclick="setTimeFilter('Aylık', this)">Aylık</button>
+                <button onclick="setTimeFilter('Yıllık', this)">Yıllık</button>
+                <button onclick="openOzelAralikModal(this)">Özel Aralık</button>
             </div>
+            <div id="aktif_tarih_metni" style="font-size: 11px; color: #666; margin-bottom: 10px;"></div>
             
             <div class="summary-item">
                 <span>Toplam Gelir</span>
@@ -215,7 +103,6 @@
                 <span>Kalan (Net)</span>
                 <span id="kalan">0.00 ₺</span>
             </div>
-
             <div class="tur-ozetleri">
                 <h4>Kalemlere Göre Toplamlar</h4>
                 <div id="kalem_detaylari"></div>
@@ -223,110 +110,194 @@
         </div>
     </div>
 
-    <script>
-        let kayitlar = JSON.parse(localStorage.getItem('muz_sera_kayitlar')) || [];
-        let editIndex = -1;
-        let currentFilter = 'Hepsi';
+    <!-- Özel Aralık Modalı -->
+    <div id="ozelModal" class="modal">
+      <div class="modal-content">
+        <h4>Özel Tarih Aralığı Seçin</h4>
+        <label>Başlangıç:</label>
+        <input type="date" id="ozel_baslangic">
+        <label>Bitiş:</label>
+        <input type="date" id="ozel_bitis">
+        <button onclick="applyOzelAralik()">Uygula</button>
+        <button onclick="document.getElementById('ozelModal').style.display='none'">İptal</button>
+      </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, onSnapshot, query } 
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "API_KEY_BURAYA",
+            authDomain: "PROJE_ADI.firebaseapp.com",
+            projectId: "PROJE_ADI",
+            storageBucket: "PROJE_ADI.appspot.com",
+            messagingSenderId: "SENDER_ID_BURAYA",
+            appId: "APP_ID_BURAYA"
+        };
+
+        let app, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (e) { console.error("Firebase başlatılamadı.", e); }
+
+        window.kayitlar = [];
+        window.editId = null;
+        window.currentFilter = 'Hepsi'; // Gelir/Gider tablosu filtresi
+        
+        // Zaman filtreleme değişkenleri
+        window.currentTimeFilter = 'Tümü';
+        window.ozelStartDate = null;
+        window.ozelEndDate = null;
+        window.activeTimeBtn = null;
 
         const gelirTurleri = ["Muz Satışı", "Devlet Desteği", "Fide Satışı", "Diğer Gelir"];
         const giderTurleri = ["İşçilik / Yevmiye", "Gübre", "İlaç", "Sulama / Su", "Elektrik", "Fide Alımı", "Bakım / Onarım", "Nakliye", "Diğer Gider"];
 
-        function init() {
-            document.getElementById('tarih').valueAsDate = new Date();
-            updateTurler();
-            render();
-        }
-
-        function updateTurler() {
+        window.updateTurler = function() {
             const islem = document.getElementById('islem_tipi').value;
             const turSelect = document.getElementById('tur');
             turSelect.innerHTML = '';
             const turler = islem === 'Gelir' ? gelirTurleri : giderTurleri;
             turler.forEach(t => {
-                let opt = document.createElement('option');
-                opt.value = t;
-                opt.innerText = t;
+                let opt = document.createElement('option'); opt.value = t; opt.innerText = t;
                 turSelect.appendChild(opt);
             });
-        }
+        };
 
-        function setTableFilter(filter) {
-            currentFilter = filter;
+        window.setTableFilter = function(filter) {
+            window.currentFilter = filter;
             document.getElementById('btn_hepsi').className = filter === 'Hepsi' ? 'active' : '';
             document.getElementById('btn_gelir').className = filter === 'Gelir' ? 'active' : '';
             document.getElementById('btn_gider').className = filter === 'Gider' ? 'active' : '';
-            render();
-        }
+            window.render();
+        };
 
-        function kaydet() {
+        window.setTimeFilter = function(filter, btnElement) {
+            window.currentTimeFilter = filter;
+            document.querySelectorAll('.filter-buttons button').forEach(b => b.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            window.render();
+        };
+
+        window.openOzelAralikModal = function(btnElement) {
+            window.activeTimeBtn = btnElement;
+            document.getElementById('ozelModal').style.display = 'block';
+        };
+
+        window.applyOzelAralik = function() {
+            const b = document.getElementById('ozel_baslangic').value;
+            const e = document.getElementById('ozel_bitis').value;
+            if(!b || !e) return alert("Lütfen iki tarihi de seçin.");
+            window.ozelStartDate = new Date(b);
+            window.ozelEndDate = new Date(e);
+            window.ozelStartDate.setHours(0,0,0,0);
+            window.ozelEndDate.setHours(23,59,59,999);
+            
+            document.getElementById('ozelModal').style.display = 'none';
+            window.setTimeFilter('Özel', window.activeTimeBtn);
+        };
+
+        window.kaydet = async function() {
+            if(!db || firebaseConfig.apiKey === "API_KEY_BURAYA") return alert("Lütfen Firebase Config bilgilerini doldurun!");
             const tarih = document.getElementById('tarih').value;
             const islem = document.getElementById('islem_tipi').value;
             const tur = document.getElementById('tur').value;
             const aciklama = document.getElementById('aciklama').value;
             const tutar = parseFloat(document.getElementById('tutar').value);
 
-            if(!tarih || isNaN(tutar) || tutar <= 0) {
-                alert("Lütfen geçerli bir tarih ve tutar giriniz.");
-                return;
-            }
+            if(!tarih || isNaN(tutar) || tutar <= 0) return alert("Geçerli bir tarih ve tutar giriniz.");
+            const data = { tarih, islem, tur, aciklama, tutar, timestamp: new Date().getTime() };
 
-            const kayit = { tarih, islem, tur, aciklama, tutar };
-
-            if(editIndex > -1) {
-                kayitlar[editIndex] = kayit;
-                editIndex = -1;
-            } else {
-                kayitlar.push(kayit);
-            }
-
-            localStorage.setItem('muz_sera_kayitlar', JSON.stringify(kayitlar));
+            if(window.editId) {
+                await updateDoc(doc(db, "sera_islemler", window.editId), data);
+                window.editId = null;
+            } else { await addDoc(collection(db, "sera_islemler"), data); }
             document.getElementById('aciklama').value = '';
             document.getElementById('tutar').value = '';
-            render();
-        }
+        };
 
-        function sil(index) {
-            if(confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
-                kayitlar.splice(index, 1);
-                localStorage.setItem('muz_sera_kayitlar', JSON.stringify(kayitlar));
-                render();
+        window.sil = async function(id) {
+            if(confirm("Silmek istediğinize emin misiniz?")) await deleteDoc(doc(db, "sera_islemler", id));
+        };
+
+        window.duzenle = function(id) {
+            const k = window.kayitlar.find(x => x.id === id);
+            if(k) {
+                document.getElementById('tarih').value = k.tarih;
+                document.getElementById('islem_tipi').value = k.islem;
+                window.updateTurler();
+                document.getElementById('tur').value = k.tur;
+                document.getElementById('aciklama').value = k.aciklama;
+                document.getElementById('tutar').value = k.tutar;
+                window.editId = id;
             }
-        }
+        };
 
-        function duzenle(index) {
-            const k = kayitlar[index];
-            document.getElementById('tarih').value = k.tarih;
-            document.getElementById('islem_tipi').value = k.islem;
-            updateTurler();
-            document.getElementById('tur').value = k.tur;
-            document.getElementById('aciklama').value = k.aciklama;
-            document.getElementById('tutar').value = k.tutar;
-            editIndex = index;
-        }
-
-        function formatMoney(amount) {
+        window.formatMoney = function(amount) {
             return amount.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
+        };
 
-        function render() {
+        window.render = function() {
             const tbody = document.getElementById('kayit_govdesi');
             tbody.innerHTML = '';
-            
-            let toplamGelir = 0;
-            let toplamGider = 0;
-            let turOzetleri = {};
+            let toplamGelir = 0; let toplamGider = 0; let turOzetleri = {};
+            let gosterilecekler = [...window.kayitlar];
 
-            // Orijinal indeksleri kaybetmemek için map kullanıyoruz
-            let gosterilecekler = kayitlar.map((k, i) => ({...k, originalIndex: i}));
-            
-            // Filtreleme
-            if(currentFilter !== 'Hepsi') {
-                gosterilecekler = gosterilecekler.filter(k => k.islem === currentFilter);
+            // 1. Kısım: Zaman Filtresi (Sağ Panel)
+            const bugun = new Date();
+            bugun.setHours(0,0,0,0);
+            let tarihMetni = "Tüm Zamanlar Gösteriliyor";
+
+            if(window.currentTimeFilter !== 'Tümü') {
+                gosterilecekler = gosterilecekler.filter(k => {
+                    const kayitTarihi = new Date(k.tarih);
+                    kayitTarihi.setHours(0,0,0,0);
+                    
+                    if(window.currentTimeFilter === 'Günlük') {
+                        tarihMetni = "Bugünün Kayıtları Gösteriliyor";
+                        return kayitTarihi.getTime() === bugun.getTime();
+                    } 
+                    else if(window.currentTimeFilter === 'Haftalık') {
+                        const birHaftaOnce = new Date(bugun);
+                        birHaftaOnce.setDate(bugun.getDate() - 7);
+                        tarihMetni = "Son 7 Gün Gösteriliyor";
+                        return kayitTarihi >= birHaftaOnce && kayitTarihi <= bugun;
+                    } 
+                    else if(window.currentTimeFilter === 'Aylık') {
+                        tarihMetni = "Bu Ayın Kayıtları Gösteriliyor";
+                        return kayitTarihi.getMonth() === bugun.getMonth() && kayitTarihi.getFullYear() === bugun.getFullYear();
+                    } 
+                    else if(window.currentTimeFilter === 'Yıllık') {
+                        tarihMetni = "Bu Yılın Kayıtları Gösteriliyor";
+                        return kayitTarihi.getFullYear() === bugun.getFullYear();
+                    } 
+                    else if(window.currentTimeFilter === 'Özel') {
+                        tarihMetni = "Özel Aralık Gösteriliyor";
+                        return kayitTarihi >= window.ozelStartDate && kayitTarihi <= window.ozelEndDate;
+                    }
+                    return true;
+                });
             }
+            document.getElementById('aktif_tarih_metni').innerText = tarihMetni;
 
-            // Tarihe göre yeniden eskiye sırala
+            // Özet Hesaplamaları (Sadece zaman filtresine uyan kayıtlardan)
+            gosterilecekler.forEach(k => {
+                if(k.islem === 'Gelir') toplamGelir += k.tutar;
+                else toplamGider += k.tutar;
+                if(!turOzetleri[k.tur]) turOzetleri[k.tur] = 0;
+                turOzetleri[k.tur] += k.tutar;
+            });
+
+            // 2. Kısım: Tablo Görünümü Filtresi (Tümü / Gelirler / Giderler)
+            if(window.currentFilter !== 'Hepsi') {
+                gosterilecekler = gosterilecekler.filter(k => k.islem === window.currentFilter);
+            }
             gosterilecekler.sort((a,b) => new Date(b.tarih) - new Date(a.tarih));
 
+            // Tabloyu Çizdir
             gosterilecekler.forEach(k => {
                 let tr = document.createElement('tr');
                 let islemColor = k.islem === 'Gelir' ? 'color: green;' : 'color: red;';
@@ -335,56 +306,49 @@
                     <td style="${islemColor} font-weight:bold;">${k.islem}</td>
                     <td>${k.tur}</td>
                     <td>${k.aciklama}</td>
-                    <td>${formatMoney(k.tutar)} ₺</td>
+                    <td>${window.formatMoney(k.tutar)} ₺</td>
                     <td>
-                        <button class="action-btn" onclick="duzenle(${k.originalIndex})">Düzenle</button>
-                        <button class="action-btn" onclick="sil(${k.originalIndex})">Sil</button>
+                        <button class="action-btn" onclick="duzenle('${k.id}')">Düzenle</button>
+                        <button class="action-btn" onclick="sil('${k.id}')">Sil</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            // Özet hesaplamaları tüm kayıtlardan (filtresiz) yapılır
-            kayitlar.forEach(k => {
-                if(k.islem === 'Gelir') toplamGelir += k.tutar;
-                else toplamGider += k.tutar;
-
-                if(!turOzetleri[k.tur]) turOzetleri[k.tur] = 0;
-                turOzetleri[k.tur] += k.tutar;
-            });
-
-            document.getElementById('toplam_gelir').innerText = formatMoney(toplamGelir) + ' ₺';
-            document.getElementById('toplam_gider').innerText = formatMoney(toplamGider) + ' ₺';
+            // Özet Ekranını Çizdir
+            document.getElementById('toplam_gelir').innerText = window.formatMoney(toplamGelir) + ' ₺';
+            document.getElementById('toplam_gider').innerText = window.formatMoney(toplamGider) + ' ₺';
             
             const kalan = toplamGelir - toplamGider;
             const kalanEl = document.getElementById('kalan');
-            kalanEl.innerText = formatMoney(kalan) + ' ₺';
-            
-            if(kalan > 0) {
-                kalanEl.className = 'text-green';
-            } else if (kalan < 0) {
-                kalanEl.className = 'text-red';
-            } else {
-                kalanEl.className = '';
-                kalanEl.style.color = '#333';
-            }
+            kalanEl.innerText = window.formatMoney(kalan) + ' ₺';
+            if(kalan > 0) kalanEl.className = 'text-green';
+            else if (kalan < 0) kalanEl.className = 'text-red';
+            else kalanEl.className = '';
 
             const kalemDetaylari = document.getElementById('kalem_detaylari');
             kalemDetaylari.innerHTML = '';
-            
-            // Türleri Gidere/Gelire göre sıralı gösterebiliriz ama hepsi bir arada da yeterli
-            // Büyükten küçüğe sıralayalım
             let sortedTurler = Object.keys(turOzetleri).sort((a,b) => turOzetleri[b] - turOzetleri[a]);
-            
             sortedTurler.forEach(t => {
                 let div = document.createElement('div');
                 div.className = 'summary-item';
-                div.innerHTML = `<span>${t}</span> <strong>${formatMoney(turOzetleri[t])} ₺</strong>`;
+                div.innerHTML = `<span>${t}</span> <strong>${window.formatMoney(turOzetleri[t])} ₺</strong>`;
                 kalemDetaylari.appendChild(div);
             });
-        }
+        };
 
-        window.onload = init;
+        window.onload = function() {
+            document.getElementById('tarih').valueAsDate = new Date();
+            window.updateTurler();
+            if(db && firebaseConfig.apiKey !== "API_KEY_BURAYA") {
+                const q = query(collection(db, "sera_islemler"));
+                onSnapshot(q, (snapshot) => {
+                    window.kayitlar = [];
+                    snapshot.forEach((docSnap) => { window.kayitlar.push({ id: docSnap.id, ...docSnap.data() }); });
+                    window.render();
+                });
+            } else { window.render(); }
+        };
     </script>
 </body>
 </html>
