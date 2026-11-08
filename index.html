@@ -34,8 +34,25 @@
         .table-filters button { padding: 3px 10px; font-size: 12px; cursor: pointer; border: 1px solid #ccc; background: #eee; }
         .table-filters button.active { background: #ddd; font-weight: bold; }
         
+        /* Sekme (Tabs) Stilleri */
+        .tabs { border-bottom: 1px solid #ccc; margin-bottom: 10px; display: flex; }
+        .tablink { background: #f0f0f0; border: 1px solid #ccc; border-bottom: none; padding: 8px 16px; cursor: pointer; border-radius: 4px 4px 0 0; margin-right: 5px; outline: none; }
+        .tablink:hover { background: #e9e9e9; }
+        .tablink.active { background: #fff; border-top: 3px solid #007bff; font-weight: bold; color: #007bff; padding-bottom: 9px; margin-bottom: -1px; }
+        .tabcontent { display: none; animation: fadeEffect 0.3s; }
+        .tabcontent.active { display: block; }
+        @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
+
+        /* Gider Grupları Özel Tasarımı */
+        .gider-kategori { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 6px; background: #fafafa; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .gider-kategori h3 { margin-top: 0; color: #cc0000; border-bottom: 2px solid #ecc; padding-bottom: 5px; font-size: 15px; }
+        .gider-aciklama-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #ccc; font-size: 13px; }
+        .gider-aciklama-item:last-child { border-bottom: none; }
+        .gider-toplam { font-weight: bold; margin-top: 12px; text-align: right; color: #333; font-size: 14px; background: #eee; padding: 5px; border-radius: 4px; }
+        .aciklama-badge { background: #e0f0ff; color: #0056b3; padding: 2px 6px; border-radius: 10px; font-size: 11px; margin-right: 8px; font-weight: bold; }
+
         /* Modal Stili */
-        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
         .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 300px; border-radius: 5px; }
         .modal-content input { margin-bottom: 10px; width: 90%; padding: 5px; }
         .modal-content button { padding: 5px 10px; cursor: pointer; }
@@ -51,32 +68,46 @@
             <option value="Gider">Gider</option>
         </select>
         <select id="tur"></select>
-        <input type="text" id="aciklama" placeholder="Açıklama / Not (Örn: İşçilik, İlaç vs.)" style="width: 250px;">
+        <input type="text" id="aciklama" placeholder="Açıklama / Not (Örn: Nakliye, İşçilik vb.)" style="width: 250px;">
         <input type="number" id="tutar" placeholder="Tutar (₺)" step="0.01" style="width: 100px;">
         <button onclick="kaydet()">Kaydet</button>
     </div>
 
     <div class="container">
         <div class="main-content">
-            <div class="table-filters">
-                <strong>Kayıtlar: </strong>
-                <button id="btn_hepsi" class="active" onclick="setTableFilter('Hepsi')">Tümü</button>
-                <button id="btn_gelir" onclick="setTableFilter('Gelir')">Sadece Gelirler</button>
-                <button id="btn_gider" onclick="setTableFilter('Gider')">Sadece Giderler</button>
+            
+            <div class="tabs">
+                <button class="tablink active" onclick="openTab(event, 'TabGenel')">Genel Kayıtlar (Tablo)</button>
+                <button class="tablink" onclick="openTab(event, 'TabGiderler')">Gider Grupları (Detaylı)</button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tarih</th>
-                        <th>İşlem Tipi</th>
-                        <th>Tür</th>
-                        <th>Açıklama</th>
-                        <th>Tutar (₺)</th>
-                        <th>İşlem</th>
-                    </tr>
-                </thead>
-                <tbody id="kayit_govdesi"></tbody>
-            </table>
+
+            <div id="TabGenel" class="tabcontent active">
+                <div class="table-filters">
+                    <strong>Kayıtlar: </strong>
+                    <button id="btn_hepsi" class="active" onclick="setTableFilter('Hepsi')">Tümü</button>
+                    <button id="btn_gelir" onclick="setTableFilter('Gelir')">Sadece Gelirler</button>
+                    <button id="btn_gider" onclick="setTableFilter('Gider')">Sadece Giderler</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>İşlem Tipi</th>
+                            <th>Tür</th>
+                            <th>Açıklama</th>
+                            <th>Tutar (₺)</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kayit_govdesi"></tbody>
+                </table>
+            </div>
+
+            <div id="TabGiderler" class="tabcontent">
+                <p style="color: #666; font-size: 12px; margin-top: 0;">Bu alanda seçtiğiniz tarih aralığındaki <strong>Elektrik, İlaç ve Su</strong> giderleri açıklamalarına göre gruplandırılarak gösterilmektedir.</p>
+                <div id="gider_gruplari_alani"></div>
+            </div>
+
         </div>
 
         <div class="summary-panel">
@@ -89,7 +120,7 @@
                 <button onclick="setTimeFilter('Yıllık', this)">Yıllık</button>
                 <button onclick="openOzelAralikModal(this)">Özel Aralık</button>
             </div>
-            <div id="aktif_tarih_metni" style="font-size: 11px; color: #666; margin-bottom: 10px;"></div>
+            <div id="aktif_tarih_metni" style="font-size: 11px; color: #666; margin-bottom: 10px;">Tüm Zamanlar Gösteriliyor</div>
             
             <div class="summary-item">
                 <span>Toplam Gelir</span>
@@ -118,6 +149,7 @@
         <input type="date" id="ozel_baslangic">
         <label>Bitiş:</label>
         <input type="date" id="ozel_bitis">
+        <br><br>
         <button onclick="applyOzelAralik()">Uygula</button>
         <button onclick="document.getElementById('ozelModal').style.display='none'">İptal</button>
       </div>
@@ -145,16 +177,31 @@
 
         window.kayitlar = [];
         window.editId = null;
-        window.currentFilter = 'Hepsi'; // Gelir/Gider tablosu filtresi
-        
-        // Zaman filtreleme değişkenleri
+        window.currentFilter = 'Hepsi'; 
         window.currentTimeFilter = 'Tümü';
         window.ozelStartDate = null;
         window.ozelEndDate = null;
         window.activeTimeBtn = null;
 
+        // İSTENİLEN GÜNCELLEME: Ana gider kalemleri sadece Elektrik, İlaç, Su olacak.
         const gelirTurleri = ["Muz Satışı", "Devlet Desteği", "Fide Satışı", "Diğer Gelir"];
-        const giderTurleri = ["İşçilik / Yevmiye", "Gübre", "İlaç", "Sulama / Su", "Elektrik", "Fide Alımı", "Bakım / Onarım", "Nakliye", "Diğer Gider"];
+        const giderTurleri = ["Elektrik", "İlaç", "Su"];
+
+        window.openTab = function(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            if(evt) evt.currentTarget.className += " active";
+        };
 
         window.updateTurler = function() {
             const islem = document.getElementById('islem_tipi').value;
@@ -191,10 +238,13 @@
             const b = document.getElementById('ozel_baslangic').value;
             const e = document.getElementById('ozel_bitis').value;
             if(!b || !e) return alert("Lütfen iki tarihi de seçin.");
-            window.ozelStartDate = new Date(b);
-            window.ozelEndDate = new Date(e);
-            window.ozelStartDate.setHours(0,0,0,0);
-            window.ozelEndDate.setHours(23,59,59,999);
+            
+            // Tarihleri güvenli bir şekilde string'den parse et
+            const [bYil, bAy, bGun] = b.split('-').map(Number);
+            const [eYil, eAy, eGun] = e.split('-').map(Number);
+            
+            window.ozelStartDate = new Date(bYil, bAy - 1, bGun);
+            window.ozelEndDate = new Date(eYil, eAy - 1, eGun);
             
             document.getElementById('ozelModal').style.display = 'none';
             window.setTimeFilter('Özel', window.activeTimeBtn);
@@ -214,7 +264,9 @@
             if(window.editId) {
                 await updateDoc(doc(db, "sera_islemler", window.editId), data);
                 window.editId = null;
-            } else { await addDoc(collection(db, "sera_islemler"), data); }
+            } else { 
+                await addDoc(collection(db, "sera_islemler"), data); 
+            }
             document.getElementById('aciklama').value = '';
             document.getElementById('tutar').value = '';
         };
@@ -246,36 +298,39 @@
             let toplamGelir = 0; let toplamGider = 0; let turOzetleri = {};
             let gosterilecekler = [...window.kayitlar];
 
-            // 1. Kısım: Zaman Filtresi (Sağ Panel)
+            // GÜNCELLEME 3: Tarih Filtresi düzeltildi (Zaman dilimi kaymaları önlendi)
             const bugun = new Date();
-            bugun.setHours(0,0,0,0);
+            const bugunYil = bugun.getFullYear();
+            const bugunAy = bugun.getMonth();
+            const bugunGun = bugun.getDate();
             let tarihMetni = "Tüm Zamanlar Gösteriliyor";
 
             if(window.currentTimeFilter !== 'Tümü') {
                 gosterilecekler = gosterilecekler.filter(k => {
-                    const kayitTarihi = new Date(k.tarih);
-                    kayitTarihi.setHours(0,0,0,0);
+                    if(!k.tarih) return false;
+                    const [yil, ay, gun] = k.tarih.split('-').map(Number);
+                    const kayitTarihi = new Date(yil, ay - 1, gun);
                     
                     if(window.currentTimeFilter === 'Günlük') {
                         tarihMetni = "Bugünün Kayıtları Gösteriliyor";
-                        return kayitTarihi.getTime() === bugun.getTime();
+                        return yil === bugunYil && (ay - 1) === bugunAy && gun === bugunGun;
                     } 
                     else if(window.currentTimeFilter === 'Haftalık') {
-                        const birHaftaOnce = new Date(bugun);
-                        birHaftaOnce.setDate(bugun.getDate() - 7);
+                        const diffTime = bugun - kayitTarihi;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                         tarihMetni = "Son 7 Gün Gösteriliyor";
-                        return kayitTarihi >= birHaftaOnce && kayitTarihi <= bugun;
+                        return diffDays <= 7 && kayitTarihi <= bugun;
                     } 
                     else if(window.currentTimeFilter === 'Aylık') {
                         tarihMetni = "Bu Ayın Kayıtları Gösteriliyor";
-                        return kayitTarihi.getMonth() === bugun.getMonth() && kayitTarihi.getFullYear() === bugun.getFullYear();
+                        return yil === bugunYil && (ay - 1) === bugunAy;
                     } 
                     else if(window.currentTimeFilter === 'Yıllık') {
                         tarihMetni = "Bu Yılın Kayıtları Gösteriliyor";
-                        return kayitTarihi.getFullYear() === bugun.getFullYear();
+                        return yil === bugunYil;
                     } 
                     else if(window.currentTimeFilter === 'Özel') {
-                        tarihMetni = "Özel Aralık Gösteriliyor";
+                        tarihMetni = "Özel Tarih Aralığı Gösteriliyor";
                         return kayitTarihi >= window.ozelStartDate && kayitTarihi <= window.ozelEndDate;
                     }
                     return true;
@@ -283,7 +338,7 @@
             }
             document.getElementById('aktif_tarih_metni').innerText = tarihMetni;
 
-            // Özet Hesaplamaları (Sadece zaman filtresine uyan kayıtlardan)
+            // Özet Hesaplamaları
             gosterilecekler.forEach(k => {
                 if(k.islem === 'Gelir') toplamGelir += k.tutar;
                 else toplamGider += k.tutar;
@@ -291,14 +346,72 @@
                 turOzetleri[k.tur] += k.tutar;
             });
 
-            // 2. Kısım: Tablo Görünümü Filtresi (Tümü / Gelirler / Giderler)
-            if(window.currentFilter !== 'Hepsi') {
-                gosterilecekler = gosterilecekler.filter(k => k.islem === window.currentFilter);
-            }
-            gosterilecekler.sort((a,b) => new Date(b.tarih) - new Date(a.tarih));
-
-            // Tabloyu Çizdir
+            // GÜNCELLEME 2: Gider Grupları (Açıklamaya göre) Sekmesi İçeriğini Hazırla
+            const giderGruplari = { "Elektrik": {}, "İlaç": {}, "Su": {} };
+            let anaGiderToplamlari = { "Elektrik": 0, "İlaç": 0, "Su": 0 };
+            
             gosterilecekler.forEach(k => {
+                if(k.islem === 'Gider') {
+                    let tur = k.tur;
+                    if(!giderGruplari[tur]) { 
+                        giderGruplari[tur] = {}; 
+                        anaGiderToplamlari[tur] = 0; 
+                    }
+                    
+                    let aciklama = (k.aciklama || "Açıklama Girilmemiş").trim();
+                    // Aynı yazılanları birleştirmek için ilk harfi büyük gerisini küçük yapabiliriz.
+                    let aciklamaNormalize = aciklama.charAt(0).toUpperCase() + aciklama.slice(1).toLowerCase();
+
+                    if(!giderGruplari[tur][aciklamaNormalize]) {
+                        giderGruplari[tur][aciklamaNormalize] = 0;
+                    }
+                    giderGruplari[tur][aciklamaNormalize] += k.tutar;
+                    anaGiderToplamlari[tur] += k.tutar;
+                }
+            });
+
+            const giderAlani = document.getElementById('gider_gruplari_alani');
+            giderAlani.innerHTML = '';
+            let veriVar = false;
+
+            giderTurleri.forEach(tur => {
+                if(anaGiderToplamlari[tur] > 0) {
+                    veriVar = true;
+                    let catDiv = document.createElement('div');
+                    catDiv.className = 'gider-kategori';
+                    catDiv.innerHTML = `<h3>${tur} Giderleri</h3>`;
+                    
+                    // Açıklama gruplarını ekle
+                    for (const [ack, miktar] of Object.entries(giderGruplari[tur])) {
+                        let itemDiv = document.createElement('div');
+                        itemDiv.className = 'gider-aciklama-item';
+                        itemDiv.innerHTML = `<div><span class="aciklama-badge">Açıklama:</span><span>${ack}</span></div> <span>${window.formatMoney(miktar)} ₺</span>`;
+                        catDiv.appendChild(itemDiv);
+                    }
+
+                    // Toplam satırını ekle
+                    let totalDiv = document.createElement('div');
+                    totalDiv.className = 'gider-toplam';
+                    totalDiv.innerText = `${tur} Toplamı: ${window.formatMoney(anaGiderToplamlari[tur])} ₺`;
+                    catDiv.appendChild(totalDiv);
+
+                    giderAlani.appendChild(catDiv);
+                }
+            });
+            
+            if(!veriVar) {
+                giderAlani.innerHTML = '<p style="color:#888; text-align:center; padding: 20px;">Bu tarih aralığında gösterilecek detaylı gider kaydı bulunmuyor.</p>';
+            }
+
+            // Tablo Görünümü Filtresi (Tümü / Gelirler / Giderler)
+            let tabloKayıtları = [...gosterilecekler];
+            if(window.currentFilter !== 'Hepsi') {
+                tabloKayıtları = tabloKayıtları.filter(k => k.islem === window.currentFilter);
+            }
+            tabloKayıtları.sort((a,b) => new Date(b.tarih) - new Date(a.tarih));
+
+            // Tabloyu Çizdir (Sekme 1)
+            tabloKayıtları.forEach(k => {
                 let tr = document.createElement('tr');
                 let islemColor = k.islem === 'Gelir' ? 'color: green;' : 'color: red;';
                 tr.innerHTML = `
@@ -315,7 +428,7 @@
                 tbody.appendChild(tr);
             });
 
-            // Özet Ekranını Çizdir
+            // Özet Ekranını (Sağ Panel) Çizdir
             document.getElementById('toplam_gelir').innerText = window.formatMoney(toplamGelir) + ' ₺';
             document.getElementById('toplam_gider').innerText = window.formatMoney(toplamGider) + ' ₺';
             
